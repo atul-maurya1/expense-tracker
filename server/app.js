@@ -40,13 +40,17 @@ const authLimiter = rateLimit({
 });
 
 // â”€â”€â”€ CORS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// CORS
+const allowedOrigins = [
+  "https://expense-tracker-bb888g5b1-atul15.vercel.app",
+  "https://expense-tracker-kappa-eight-95.vercel.app",
+  "https://expense-tracker-git-main-atul15.vercel.app",
+  "http://localhost:5173",
+];
+
 app.use(
   cors({
-    origin: [
-      "https://expense-tracker-kappa-eight-95.vercel.app",
-       "https://expense-tracker-git-main-atul15.vercel.app",
-       "http://localhost:5173"
-      ],
+    origin: allowedOrigins,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
