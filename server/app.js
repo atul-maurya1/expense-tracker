@@ -32,18 +32,17 @@ app.use(limiter);
 
 
 const allowedOrigins = [
-  "https://expense-tracker-bb888g5b1-atul15.vercel.app",
-  "https://expense-tracker-kappa-eight-95.vercel.app",
-  "https://expense-tracker-git-main-atul15.vercel.app",
-  "http://localhost:5173",
+  'https://expense-tracker-atul15.vercel.app',
+  'https://expense-tracker-git-main-atul15.vercel.app',
+  'http://localhost:5173',
 ];
 
 app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 

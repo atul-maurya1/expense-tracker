@@ -1,6 +1,8 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const baseURL = import.meta.env.VITE_API_URL || 'https://expense-tracker-f8fs.onrender.com/api'
+const baseURL =
+  import.meta.env.VITE_API_URL ||
+  'https://expense-tracker-f8fs.onrender.com/api';
 
 const api = axios.create({
   baseURL,
@@ -8,29 +10,31 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-})
+});
 
-// Response interceptor
 api.interceptors.response.use(
   (response) => response,
+
   (error) => {
-    if (error.response?.status === 401) {
-      // Only redirect to login if not already on auth pages
-      const pathname = window.location.pathname
-      if (!pathname.includes('/login') && !pathname.includes('/register')) {
-        window.location.href = '/login'
-      }
+    const status = error.response?.status;
+    const pathname = window.location.pathname;
+
+    if (
+      status === 401 &&
+      !pathname.startsWith('/login') &&
+      !pathname.startsWith('/register')
+    ) {
+      window.location.replace('/login');
     }
 
-    // Extract error message
     const message =
       error.response?.data?.message ||
       error.response?.data?.error ||
       error.message ||
-      'Something went wrong'
+      'Something went wrong';
 
-    return Promise.reject(new Error(message))
+    return Promise.reject(error);
   }
-)
+);
 
-export default api
+export default api;
