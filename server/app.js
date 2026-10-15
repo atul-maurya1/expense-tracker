@@ -1,4 +1,4 @@
-const express = require("express");
+﻿const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -30,7 +30,7 @@ app.use(cookieParser());
 
 
 const allowedOrigins = [
-  "https://expense-tracker-kappa-eight-95.vercel.app",
+  "etracker10.vercel.app",
   "https://expense-tracker-atul15.vercel.app",
   "https://expense-tracker-git-main-atul15.vercel.app",
   "http://localhost:5173",
