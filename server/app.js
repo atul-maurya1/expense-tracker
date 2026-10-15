@@ -53,6 +53,10 @@ app.use(
 );
 
 
+app.get('/api/hello',(req, res )=> {
+  res.send("HEllo ")
+})
+
 
 app.get("/api/health", (req, res) => {
   res.json({
