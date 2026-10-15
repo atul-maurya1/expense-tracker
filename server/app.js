@@ -30,7 +30,7 @@ app.use(cookieParser());
 
 
 const allowedOrigins = [
-  "etracker10.vercel.app",
+  "https://etracker10.vercel.app",
   "https://expense-tracker-atul15.vercel.app",
   "https://expense-tracker-git-main-atul15.vercel.app",
   "http://localhost:5173",
