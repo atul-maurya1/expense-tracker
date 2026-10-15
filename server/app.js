@@ -1,4 +1,4 @@
-﻿const express = require("express");
+const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -39,7 +39,11 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        /^https:\/\/expense-tracker[a-z0-9-]*\.vercel\.app$/.test(origin)
+      ) {
         return callback(null, true);
       }
 

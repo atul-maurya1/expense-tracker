@@ -1,13 +1,14 @@
-﻿const User = require("../models/User");
+const User = require("../models/User");
 const ApiError = require("../utils/ApiError");
 const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 const { generateToken } = require("../utils/jwt");
 
+const isProduction = process.env.NODE_ENV === "production";
 const cookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "lax",
+  secure: isProduction,
+  sameSite: isProduction ? "none" : "lax",
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 };
 
@@ -28,7 +29,10 @@ const register = asyncHandler(async (req, res) => {
   const token = generateToken(user._id);
   res.cookie("token", token, cookieOptions);
 
-  return new ApiResponse(201, "Registration successful", user).send(res);
+  const userObj = user.toJSON();
+  userObj.token = token;
+
+  return new ApiResponse(201, "Registration successful", userObj).send(res);
 });
 
 // @desc    Login user
@@ -51,8 +55,9 @@ const login = asyncHandler(async (req, res) => {
   const token = generateToken(user._id);
   res.cookie("token", token, cookieOptions);
 
-  // Remove password from response
+  // Remove password from response and return token
   const userObj = user.toJSON();
+  userObj.token = token;
   return new ApiResponse(200, "Login successful", userObj).send(res);
 });
 
@@ -60,11 +65,7 @@ const login = asyncHandler(async (req, res) => {
 // @route   POST /api/auth/logout
 // @access  Private
 const logout = asyncHandler(async (req, res) => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-  });
+  res.clearCookie("token", cookieOptions);
   return new ApiResponse(200, "Logged out successfully", null).send(res);
 });
 
