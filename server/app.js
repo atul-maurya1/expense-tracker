@@ -27,6 +27,32 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 
+
+
+const allowedOrigins = [
+  "https://expense-tracker-kappa-eight-95.vercel.app",
+  "https://expense-tracker-atul15.vercel.app",
+  "https://expense-tracker-git-main-atul15.vercel.app",
+  "http://localhost:5173",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      console.error("Blocked by CORS:", origin);
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 200,
@@ -37,25 +63,6 @@ const limiter = rateLimit({
 app.use(limiter);
 
 
-const allowedOrigins = [
-  'https://expense-tracker-atul15.vercel.app',
-  'https://expense-tracker-git-main-atul15.vercel.app',
-  'http://localhost:5173',
-];
-
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  })
-);
-
-
-app.get('/api/hello',(req, res )=> {
-  res.send("HEllo ")
-})
 
 
 app.get("/api/health", (req, res) => {
